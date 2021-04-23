@@ -4,16 +4,12 @@ Run `docker-compose up`
 
 Go to `localhost:8000`
 
-There should be two databases:
-
-`demo1` and `demo2`
-
 # Setting up the docker-compose volumes and network
 
-docker-compose derives the network name from the directory name containing the
+`docker-compose` derives the network name from the directory name containing the
 `docker-compose.yml` file. In this example the network name is `docker-compose-postgres_default`.
 
-# Setting up the PostgresSQL Container
+# Setting up the Postgres Container
 
 The `docker-compose.yml` contains a service named `postgres` defined below.
 
@@ -24,7 +20,7 @@ services:
     image: "postgres"
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_PASSWORD: "postgres"
       PGDATA: "/data/postgres"
     volumes:
       - postgres:/data/postgres
@@ -41,11 +37,10 @@ Postgres database files are stored in `/data/postgres`.
 This directory is mapped to postgres volume via the mapping `postgres:/data/postgres`.
 
 When the postgres container starts it looks for a file called `docker_postgres_init.sql`
-which will be executed during start up to configure the database. For example, in this repo we
-create two databases `demo1` and `demo2` using the DDL below.
+which will be executed during start up to configure the database.
 
 ```SQL
-CREATE DATABASE demo1
+CREATE DATABASE graphql
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
@@ -53,27 +48,6 @@ CREATE DATABASE demo1
     LC_CTYPE = 'en_US.utf8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
-
-CREATE DATABASE demo2
-    WITH
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'en_US.utf8'
-    LC_CTYPE = 'en_US.utf8'
-    TABLESPACE = pg_default
-    CONNECTION LIMIT = -1;
-```
-
-The postgres container looks for the initialization sql file at the path
-`/docker-entrypoint-initdb.d/docker_postgres_init.sql`. To keep things
-simple we store our ddl in a file called `docker_postgres_init.sql` and put it
-at the same level as the `docker-compose.yml` as shown by the example directory
-listing below.
-
-```
--rw-r--r--   1 adib  staff   1.0K  2 Aug 20:37 docker-compose.yml
--rw-r--r--   1 adib  staff   300B  2 Aug 17:04 docker_pgadmin_servers.json
--rw-r--r--   1 adib  staff   375B  2 Aug 16:35 docker_postgres_init.sql
 ```
 
 The init sql file is mapped to the place where the postgres container expects it to
@@ -102,7 +76,7 @@ pgadmin:
 container_name: demo_pgadmin
 image: "dpage/pgadmin4"
 environment:
-  PGADMIN_DEFAULT_EMAIL: admin
+  PGADMIN_DEFAULT_EMAIL: admin@admin.com
   PGADMIN_DEFAULT_PASSWORD: admin
   PGADMIN_CONFIG_SERVER_MODE: "False"
   PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"

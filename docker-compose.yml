@@ -10,7 +10,7 @@ services:
     image: "postgres:13"
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_PASSWORD: "postgres"
       PGDATA: "/data/postgres"
     volumes:
       - postgres:/data/postgres
