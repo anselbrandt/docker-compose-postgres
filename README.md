@@ -3,9 +3,9 @@
 Run
 
 ```
-docker-compose rm -f
+docker-compose down
 docker-compose pull
-docker compose up --build -d
+docker compose up -d
 ```
 
 Go to `localhost:8000`

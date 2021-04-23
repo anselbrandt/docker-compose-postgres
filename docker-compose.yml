@@ -51,7 +51,7 @@ services:
     container_name: demo_rediscommander
     image: "rediscommander/redis-commander"
     environment:
-      - REDIS_HOSTS=local:redis:6379
+      - REDIS_HOSTS=express:redis:6379
     ports:
       - "8001:8081"
     restart: unless-stopped
