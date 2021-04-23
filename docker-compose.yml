@@ -3,6 +3,8 @@ version: "3.9"
 volumes:
   postgres:
   pgadmin:
+  redis:
+  rediscommander:
 
 services:
   postgres:
@@ -16,7 +18,7 @@ services:
       - postgres:/data/postgres
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     ports:
-      - "15432:5432"
+      - "5432:5432"
     restart: unless-stopped
 
   pgadmin:
@@ -35,5 +37,21 @@ services:
     entrypoint:
       - "/bin/sh"
       - "-c"
-      - "/bin/echo 'postgres:5432:*:postgres:password' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
+      - "/bin/echo 'postgres:5432:*:postgres:postgres' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
+    restart: unless-stopped
+
+  redis:
+    container_name: demo_redis
+    image: "redis:6"
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  rediscommander:
+    container_name: demo_rediscommander
+    image: "rediscommander/redis-commander"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8001:8081"
     restart: unless-stopped
