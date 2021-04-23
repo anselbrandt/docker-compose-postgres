@@ -1,6 +1,12 @@
 # Local Postgres with Docker Compose
 
-Run `docker-compose up`
+Run
+
+```
+docker compose rm -f
+docker compose pull
+docker compose up --build -d
+```
 
 Go to `localhost:8000`
 
